@@ -1,26 +1,43 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { JSONDATA } from './data.js';
+import DataDisplayTable from './DataDisplayTable';
+import { Button } from 'semantic-ui-react';
+class App extends React.Component{
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  state = {
+    data: JSONDATA,
+  }
+
+
+  getKeys = () => {
+        //here I manipulate the data and get just the keys so I can use them for
+        let dataArray = this.state.data
+        let keys = dataArray.map(object => Object.keys(object))[0]
+
+        return keys
+  }
+
+
+  render(){
+    const properties = this.getKeys()
+    const buttonGroup = properties.map( property => <Button onClick={() => console.log(`clicked ${property}`)} >{property}</Button>)
+    return (
+      <div>
+        <br/>
+        Search: <input placeholder='search by id'/>
+        <br/>
+        <br/>
+
+        <Button.Group>
+          {buttonGroup}
+        </Button.Group>
+
+        <DataDisplayTable data={this.state.data} properties={properties}/>
+      </div>
+    );
+  }
 }
 
 export default App;
