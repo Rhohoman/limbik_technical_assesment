@@ -10,16 +10,18 @@ class DataDisplayTable extends React.Component {
         const headerCell = properties.map( property => <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
 
         const tableRow = data.map(dataObject =>
-            <Table.Row>
+            <Table.Row onClick={() => this.props.displayCallback(dataObject)}>
                 <Table.Cell>{dataObject.id}</Table.Cell>
                 <Table.Cell>{dataObject.pdf}</Table.Cell>
-                {/* <Table.Cell>{dataObject.text}</Table.Cell>
+                <Table.Cell>{dataObject.text}</Table.Cell>
                 <Table.Cell>{dataObject.url}</Table.Cell>
                 <Table.Cell>{dataObject.impressions}</Table.Cell>
                 <Table.Cell>{dataObject.clicks}</Table.Cell>
-                <Table.Cell>{dataObject.spend}</Table.Cell>
-                <Table.Cell>{dataObject.created}</Table.Cell>
-                <Table.Cell>{dataObject.ended}</Table.Cell> */}
+                <Table.Cell>spend</Table.Cell>
+                <Table.Cell>created</Table.Cell>
+                <Table.Cell>ended</Table.Cell>
+                <Table.Cell>targeting</Table.Cell>
+                <Table.Cell>{dataObject.image}</Table.Cell>
             </Table.Row>
         )
         // const tableRow = data.map(data => console.log(data))

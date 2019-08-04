@@ -3,11 +3,16 @@ import logo from './logo.svg';
 import './App.css';
 import { JSONDATA } from './data.js';
 import DataDisplayTable from './DataDisplayTable';
+import DataDisplay from './DataDisplay';
 import { Button } from 'semantic-ui-react';
+
+
 class App extends React.Component{
 
   state = {
     data: JSONDATA,
+    displayTable: true,
+    displayObject: {},
   }
 
 
@@ -19,22 +24,51 @@ class App extends React.Component{
         return keys
   }
 
+  displayCallback = (dataObject) => {
+    //callback from table
+    // console.log(dataObject)
+    this.setState((prevState) => ({
+        displayTable: !prevState,
+        displayObject: dataObject,
+      })
+    )
+  }
+
+  backToDisplayTable = () => {
+    console.log(`back!`)
+  }
+
 
   render(){
     const properties = this.getKeys()
-    const buttonGroup = properties.map( property => <Button onClick={() => console.log(`clicked ${property}`)} >{property}</Button>)
+    // const buttonGroup = properties.map( property => <Button onClick={() => console.log(`clicked ${property}`)} >{property}</Button>)
     return (
       <div>
-        <br/>
-        Search: <input placeholder='search by id'/>
-        <br/>
-        <br/>
+        {this.state.displayTable ? 
+          <div>
+            <br/>
+            Search: <input placeholder='search by id'/>
+            <br/>
+            <br/>
 
-        <Button.Group>
-          {buttonGroup}
-        </Button.Group>
+            <h2>Filtering Options</h2>
+            <Button.Group>
+              {/* {buttonGroup} */}
+              <Button onClick={()=>console.log(`Filtering by id`)}>id</Button>
+              <Button onClick={()=>console.log(`Filtering by pdf`)}>pdf</Button>
+              <Button onClick={()=>console.log(`Filtering by text`)}>text</Button>
+              <Button onClick={()=>console.log(`Filtering by url`)}>url</Button>
+              <Button onClick={()=>console.log(`Filtering by impresions`)}>impressions</Button>
+              <Button onClick={()=>console.log(`Filtering by clciks`)}>clicks</Button>
+              <Button onClick={()=>console.log(`Filtering by image`)}>image</Button>
 
-        <DataDisplayTable data={this.state.data} properties={properties}/>
+            </Button.Group>
+
+            <DataDisplayTable data={this.state.data} properties={properties} displayCallback={this.displayCallback}/>
+          </div>
+            :
+          <DataDisplay displayObject={this.state.displayObject} back={this.backToDisplayTable}/>
+        }
       </div>
     );
   }
