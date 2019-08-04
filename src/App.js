@@ -4,7 +4,7 @@ import './App.css';
 import { JSONDATA } from './data.js';
 import DataDisplayTable from './DataDisplayTable';
 import DataDisplay from './DataDisplay';
-import { Button } from 'semantic-ui-react';
+import { Button, Form, Header } from 'semantic-ui-react';
 
 
 class App extends React.Component{
@@ -49,10 +49,23 @@ class App extends React.Component{
     })
   }
 
-  handleSearchIdSubmit = (event) => {
-    debugger
+  handleIdSearchIdSubmit = (event) => {
     event.preventDefault()
-    console.log('event: ', event)
+    // console.log('event: ', event.target.querySelector('input').value)
+    let id = this.state.idSearchValue
+    //search throguh all data to find object with this id and then send it to the data Display
+    let data = this.state.data
+
+    // data.filter(dataObject => dataObject.includes(id))
+    let searchObject = data.filter(dataObject => dataObject.id == id)[0]
+
+    // console.log(searchObject)
+
+    this.setState((prevState) => ({
+        displayTable: !prevState,
+        displayObject: searchObject,
+      })
+    )
   }
 
   render(){
@@ -63,19 +76,16 @@ class App extends React.Component{
         {this.state.displayTable === true ? 
           <div>
             <br/>
-            <form >
-              Search: <input placeholder='search by id' name='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/><button onSubmit={(event) => this.handleIdSearchIdSubmit(event)}>submit</button>
+            <form onSubmit={(event) => this.handleIdSearchIdSubmit(event)}>
+              Search: <input placeholder='search by id' name='idSearchValue' id='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/><button >submit</button>
             </form>
             <br/>
             <br/>
-
-
             <br/>
             <br/>
 
             <h2>Filtering Options</h2>
             <Button.Group>
-              {/* {buttonGroup} */}
               <Button onClick={()=>console.log(`Filtering by id`)}>id</Button>
               <Button onClick={()=>console.log(`Filtering by pdf`)}>pdf</Button>
               <Button onClick={()=>console.log(`Filtering by text`)}>text</Button>
@@ -83,8 +93,15 @@ class App extends React.Component{
               <Button onClick={()=>console.log(`Filtering by impresions`)}>impressions</Button>
               <Button onClick={()=>console.log(`Filtering by clciks`)}>clicks</Button>
               <Button onClick={()=>console.log(`Filtering by image`)}>image</Button>
-
             </Button.Group>
+
+            <form>
+              <input placeholder='filtering...'/>
+              <input placeholder='filtering...'/>
+              <input placeholder='filtering...'/>
+              <input placeholder='filtering...'/>
+              <input placeholder='filtering...'/>
+            </form>
 
             <DataDisplayTable data={this.state.data} properties={properties} displayCallback={this.displayCallback}/>
           </div>

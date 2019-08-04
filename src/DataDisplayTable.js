@@ -24,7 +24,6 @@ class DataDisplayTable extends React.Component {
                 <Table.Cell>{dataObject.image}</Table.Cell>
             </Table.Row>
         )
-        // const tableRow = data.map(data => console.log(data))
         return(
             <div>
                 <h1>Display Table</h1>
