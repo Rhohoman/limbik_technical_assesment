@@ -13,6 +13,7 @@ class App extends React.Component{
     data: JSONDATA,
     displayTable: true,
     displayObject: {},
+    idSearchValue: "",
   }
 
 
@@ -25,8 +26,6 @@ class App extends React.Component{
   }
 
   displayCallback = (dataObject) => {
-    //callback from table
-    // console.log(dataObject)
     this.setState((prevState) => ({
         displayTable: !prevState,
         displayObject: dataObject,
@@ -36,18 +35,41 @@ class App extends React.Component{
 
   backToDisplayTable = () => {
     console.log(`back!`)
+
+    this.setState({
+      displayTable: true,
+    }, () => console.log(this.state.displayTable))
+    
   }
 
+  handleIdSearchChange = (event) => {
+    console.log(event.target.value)
+    this.setState({
+      idSearchValue: event.target.value
+    })
+  }
+
+  handleSearchIdSubmit = (event) => {
+    debugger
+    event.preventDefault()
+    console.log('event: ', event)
+  }
 
   render(){
     const properties = this.getKeys()
     // const buttonGroup = properties.map( property => <Button onClick={() => console.log(`clicked ${property}`)} >{property}</Button>)
     return (
       <div>
-        {this.state.displayTable ? 
+        {this.state.displayTable === true ? 
           <div>
             <br/>
-            Search: <input placeholder='search by id'/>
+            <form >
+              Search: <input placeholder='search by id' name='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/><button onSubmit={(event) => this.handleIdSearchIdSubmit(event)}>submit</button>
+            </form>
+            <br/>
+            <br/>
+
+
             <br/>
             <br/>
 
@@ -67,7 +89,7 @@ class App extends React.Component{
             <DataDisplayTable data={this.state.data} properties={properties} displayCallback={this.displayCallback}/>
           </div>
             :
-          <DataDisplay displayObject={this.state.displayObject} back={this.backToDisplayTable}/>
+          <DataDisplay displayObject={this.state.displayObject} backToDisplayTable={this.backToDisplayTable}/>
         }
       </div>
     );

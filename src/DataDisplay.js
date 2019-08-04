@@ -5,7 +5,7 @@ class DataDisplay extends React.Component{
         let displayObject = this.props.displayObject
         return(
             <div>
-                <button onClick={this.props.back()}>Back</button>
+                <button onClick={() => this.props.backToDisplayTable()}>Back</button>
                 <h3>Display card</h3>
                 id:{displayObject.id}<br/>
                 pdf:{displayObject.pdf}<br/>
