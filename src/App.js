@@ -31,6 +31,9 @@ class App extends React.Component{
         <br/>
 
         <Button.Group>
+          <Button.Header>
+            Filtering
+          </Button.Header>
           {buttonGroup}
         </Button.Group>
 
