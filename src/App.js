@@ -87,20 +87,16 @@ class App extends React.Component{
   handleDataTableFilter = (filterKey,filterTerm) => {
     let data = this.state.data
     let filteredData = []
-    console.log(`filterKey: `,filterKey)
-    console.log(`filterTerm: `,filterTerm)
+    // console.log(`filterKey: `,filterKey)
+    // console.log(`filterTerm: `,filterTerm)
 
-    // debugger
-
-    if( filterKey == 'id'){
+    if( (filterKey == 'id') || (filterKey == 'impressions') || (filterKey == 'clicks')){
       filteredData = data.filter(obj => obj[filterKey].toString().includes(filterTerm))
     } else {
+      //ignoring null values
       filteredData = data.filter(obj => obj[filterKey] !== null)
       filteredData = filteredData.filter(obj => obj[filterKey].includes(filterTerm))
     }
-    // I want to return the entire object not just the key
-    // iterate through the data and check if the filter keys are  
-    // console.log(`filteredData: `,filteredData)
 
     this.setState({
       filteredTableData: filteredData
@@ -123,6 +119,13 @@ class App extends React.Component{
       filteredTableData: this.state.data,
       filterForm: null,
     })
+  }
+
+  sortTableData = (sortType) => {
+    //sort by impressions or clicks
+    console.log('SORTING BY...', sortType)
+
+    //sort data displayed with the sort Type
   }
 
   render(){
@@ -154,16 +157,8 @@ class App extends React.Component{
             </Button.Group>
 
             {formDisplay}
-            {/* <form>
-              Id: <input onChange={(event) => this.handleFilterChange(event)} name='id' placeholder='filtering...'/><br/>
-              Pdf: <input onChange={(event) => this.handleFilterChange(event)} name='pdf' placeholder='filtering...'/><br/>
-              Text: <input onChange={(event) => this.handleFilterChange(event)} name='text' placeholder='filtering...'/><br/>
-              Url: <input onChange={(event) => this.handleFilterChange(event)} name='url' placeholder='filtering...'/><br/>
-              Image: <input onChange={(event) => this.handleFilterChange(event)} name='image' placeholder='filtering...'/>
-            </form> */}
-            
 
-            <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} displayCallback={this.displayCallback}/>
+            <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} displayCallback={this.displayCallback} sortTableData={this.sortTableData}/>
           </div>
             :
           <DataDisplay displayObject={this.state.displayObject} backToDisplayTable={this.backToDisplayTable}/>

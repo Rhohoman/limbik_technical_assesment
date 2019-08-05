@@ -5,10 +5,11 @@ class DataDisplayTable extends React.Component {
 
 
     render(){
+        console.log(this.props)
         const data = this.props.data
         const properties = this.props.properties
 
-        const headerCell = properties.map( property => <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
+        const headerCell = properties.map( property => (property == 'impressions' || property == 'clicks') ? <Table.HeaderCell rowSpan='2' onClick={() => this.props.sortTableData(property)}>{property}</Table.HeaderCell> : <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
 
         const tableRow = data.map(dataObject =>
             <Table.Row onClick={() => this.props.displayCallback(dataObject)}>
@@ -21,6 +22,7 @@ class DataDisplayTable extends React.Component {
                 <Table.Cell>spend</Table.Cell>
                 <Table.Cell>created</Table.Cell>
                 <Table.Cell>ended</Table.Cell>
+                <Table.Cell>targeting</Table.Cell>
                 <Table.Cell>{dataObject.image}</Table.Cell>
             </Table.Row>
         )
