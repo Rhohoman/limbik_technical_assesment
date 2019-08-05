@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Container } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 
 class DataDisplay extends React.Component{
     render(){
@@ -12,7 +12,6 @@ class DataDisplay extends React.Component{
             <div>
                 <button onClick={() => this.props.backToDisplayTable()}>Back</button>
 
-                <Container>
                 <h3>Displaying...</h3>
                 <Table celled structured striped >
                     <Table.Header>
@@ -36,7 +35,6 @@ class DataDisplay extends React.Component{
                         </Table.Row>
                     </Table.Body>
                 </Table>
-                </Container>
             </div>
         )
     }
