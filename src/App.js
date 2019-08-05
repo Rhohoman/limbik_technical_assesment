@@ -21,6 +21,7 @@ class App extends React.Component{
     image: '',
     filterForm: null,
     filteredTableData: [],
+    sorted: false,
   }
 
 
@@ -123,9 +124,33 @@ class App extends React.Component{
 
   sortTableData = (sortType) => {
     //sort by impressions or clicks
+    let data = this.state.data
+    let sortedData = []
     console.log('SORTING BY...', sortType)
 
+    switch(sortType){
+      case 'impressions':
+        this.state.sorted ? sortedData = data.map(obj => obj[sortType]).sort(function(a, b){return b-a}) : sortedData = data.map(obj => obj[sortType]).sort(function(a, b){return a-b})
+        debugger
+        this.setState((prevState) => ({
+            sorted: !prevState,
+            filteredTableData: sortedData,
+          })
+        )
+        break;
+      case 'clicks':
+        this.state.sorted ? sortedData = data.map(obj => obj[sortType]).sort(function(a, b){return b-a}) : sortedData = data.map(obj => obj[sortType]).sort(function(a, b){return a-b})
+
+        this.setState((prevState) => ({
+            sorted: !prevState,
+            filteredTableData: sortedData,
+          })
+        )
+        break;  
+      default:
+    }
     //sort data displayed with the sort Type
+
   }
 
   render(){

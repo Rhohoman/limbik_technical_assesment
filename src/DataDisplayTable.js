@@ -5,7 +5,6 @@ class DataDisplayTable extends React.Component {
 
 
     render(){
-        console.log(this.props)
         const data = this.props.data
         const properties = this.props.properties
 
