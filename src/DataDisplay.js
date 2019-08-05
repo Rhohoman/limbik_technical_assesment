@@ -10,7 +10,6 @@ class DataDisplay extends React.Component{
                 id:{displayObject.id}<br/>
                 pdf:{displayObject.pdf}<br/>
                 text:{displayObject.text}<br/>
-                text:{displayObject.text}<br/>
                 url:{displayObject.url}<br/>
                 impressions:{displayObject.impressions}<br/>
                 clicks:{displayObject.clicks}<br/>

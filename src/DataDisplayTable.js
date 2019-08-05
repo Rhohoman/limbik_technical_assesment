@@ -21,10 +21,6 @@ class DataDisplayTable extends React.Component {
                 <Table.Cell>spend</Table.Cell>
                 <Table.Cell>created</Table.Cell>
                 <Table.Cell>ended</Table.Cell>
-<<<<<<< HEAD
-=======
-                <Table.Cell>targeting</Table.Cell>
->>>>>>> 28bed5e435b42cc6857c605ed610a63016f6b14d
                 <Table.Cell>{dataObject.image}</Table.Cell>
             </Table.Row>
         )
