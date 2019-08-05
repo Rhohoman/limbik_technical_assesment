@@ -7,7 +7,7 @@ class DataDisplayTable extends React.Component {
         const data = this.props.data
         const properties = this.props.properties
 
-        const headerCell = properties.map( property => <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
+        const headerCell = properties.map( property => (property == 'impressions' || property == 'clicks') ? <Table.HeaderCell rowSpan='2' onClick={() => this.props.sortTableData(property) }>{property} (click to sort)</Table.HeaderCell> : <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
 
         const tableRow = data.map(dataObject =>
             <Table.Row onClick={() => this.props.displayCallback(dataObject)}>
@@ -17,14 +17,13 @@ class DataDisplayTable extends React.Component {
                 <Table.Cell>{dataObject.url}</Table.Cell>
                 <Table.Cell>{dataObject.impressions}</Table.Cell>
                 <Table.Cell>{dataObject.clicks}</Table.Cell>
-                <Table.Cell>spend</Table.Cell>
-                <Table.Cell>created</Table.Cell>
-                <Table.Cell>ended</Table.Cell>
-                <Table.Cell>targeting</Table.Cell>
+                <Table.Cell>amount: {dataObject.spend.amount == null ? 'N/A' : dataObject.spend.amount } / currency: {dataObject.spend.currency == null ? 'N/A' : dataObject.spend.currency }</Table.Cell>
+                <Table.Cell>{dataObject.created == null ? 'N/A' : dataObject.created}</Table.Cell>
+                <Table.Cell>{dataObject.ended == null ? 'N/A' : dataObject.ended}</Table.Cell>
+                <Table.Cell>Disclosed</Table.Cell>
                 <Table.Cell>{dataObject.image}</Table.Cell>
             </Table.Row>
         )
-        // const tableRow = data.map(data => console.log(data))
         return(
             <div>
                 <h1>Display Table</h1>
@@ -36,7 +35,6 @@ class DataDisplayTable extends React.Component {
                             {headerCell}
                         </Table.Row>
                     </Table.Header>
-                    {/* the header here takes the keys */}
 
                     <Table.Body>
                         {tableRow}
