@@ -27,7 +27,7 @@ class App extends React.Component{
 
   getKeys = () => {
         //here I manipulate the data and get just the keys so I can use them for
-        let dataArray = this.state.data
+        let dataArray = [...this.state.data]
         let keys = dataArray.map(object => Object.keys(object))[0]
 
         return keys
@@ -62,7 +62,7 @@ class App extends React.Component{
     // console.log('event: ', event.target.querySelector('input').value)
     let id = this.state.idSearchValue
     //search throguh all data to find object with this id and then send it to the data Display
-    let data = this.state.data
+    let data = [...this.state.data]
 
     // data.filter(dataObject => dataObject.includes(id))
     let searchObject = data.filter(dataObject => dataObject.id == id)[0]
@@ -124,34 +124,38 @@ class App extends React.Component{
 
   sortTableData = (sortType) => {
     //sort by impressions or clicks
-    let data = this.state.data
+    let data = [...this.state.data]
     let sortedData = []
-    console.log('SORTING BY...', sortType)
+    console.log('sortType: ', sortType)
+    console.log(this.state.sorted)
 
-    switch(sortType){
-      case 'impressions':
-        this.state.sorted ? sortedData = data.map(obj => obj[sortType]).sort(function(a, b){return b-a}) : sortedData = data.map(obj => obj[sortType]).sort(function(a, b){return a-b})
-        debugger
-        this.setState((prevState) => ({
-            sorted: !prevState,
-            filteredTableData: sortedData,
-          })
-        )
-        break;
-      case 'clicks':
-        this.state.sorted ? sortedData = data.map(obj => obj[sortType]).sort(function(a, b){return b-a}) : sortedData = data.map(obj => obj[sortType]).sort(function(a, b){return a-b})
+    if (sortType == 'impressions'){
+      console.log('impressions')
+      // this.state.sorted ? sortedData = data.map(obj => obj[sortType]).sort(function(a, b){return b-a}) : sortedData = data.map(obj => obj[sortType]).sort(function(a, b){return a-b})
+      sortedData = this.state.sorted ? data.sort(function(a,b) {return b.impressions - a.impressions}) : data.sort(function(a,b) {return a.impressions - b.impressions})
+      // debugger
+      // this.setState((prevState) => ({
+      //   sorted: !prevState,
+      //   filteredTableData: sortedData,
+      // },() => console.log('did it hit?')))
+      this.setState({
+        sorted: !this.state.sorted,
+        filteredTableData: sortedData,
+      },() => console.log('did it hit?'))
+    } else if (sortType == 'clicks'){
 
-        this.setState((prevState) => ({
-            sorted: !prevState,
-            filteredTableData: sortedData,
-          })
-        )
-        break;  
-      default:
+      console.log('clicks')
+
+      sortedData = this.state.sorted ? data.sort(function(a,b) {return b.impressions - a.impressions}) : data.sort(function(a,b) {return a.impressions - b.impressions})
+      this.setState({
+        sorted: !this.state.sorted,
+        filteredTableData: sortedData,
+      },() => console.log('did it hit?'))
     }
     //sort data displayed with the sort Type
 
   }
+
 
   render(){
     const properties = this.getKeys()
