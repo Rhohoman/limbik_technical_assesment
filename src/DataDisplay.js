@@ -3,7 +3,7 @@ import { Table } from 'semantic-ui-react';
 
 class DataDisplay extends React.Component{
     render(){
-        let displayObject = this.props.displayObject
+        let displayObjectArray = this.props.displayObjectArray
 
         const properties = this.props.properties
         const headerCell = properties.map( property => (property == 'impressions' || property == 'clicks') ? <Table.HeaderCell rowSpan='2' onClick={() => this.props.sortTableData(property) }>{property} (click to sort)</Table.HeaderCell> : <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
@@ -11,7 +11,6 @@ class DataDisplay extends React.Component{
         return(
             <div className='center'>
                 <button onClick={() => this.props.backToDisplayTable()}>Back</button>
-
                 <h3>Displaying...</h3>
                 <Table celled structured striped >
                     <Table.Header>
@@ -19,21 +18,23 @@ class DataDisplay extends React.Component{
                             {headerCell}
                         </Table.Row>
                     </Table.Header>
-                    <Table.Body>
-                        <Table.Row>
-                            <Table.Cell>{displayObject.id}</Table.Cell>
-                            <Table.Cell>{displayObject.pdf}</Table.Cell>
-                            <Table.Cell>{displayObject.text}</Table.Cell>
-                            <Table.Cell>{displayObject.url}</Table.Cell>
-                            <Table.Cell>{displayObject.impressions}</Table.Cell>
-                            <Table.Cell>{displayObject.clicks}</Table.Cell>
-                            <Table.Cell>amount: {displayObject.spend.amount == null ? 'N/A' : displayObject.spend.amount } / currency: {displayObject.spend.currency == null ? 'N/A' : displayObject.spend.currency }</Table.Cell>
-                            <Table.Cell>{displayObject.created == null ? 'N/A' : displayObject.created}</Table.Cell>
-                            <Table.Cell>{displayObject.ended == null ? 'N/A' : displayObject.ended}</Table.Cell>
-                            <Table.Cell>Disclosed</Table.Cell>
-                            <Table.Cell>{displayObject.image}</Table.Cell>
-                        </Table.Row>
-                    </Table.Body>
+                    {displayObjectArray.map(obj =>
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.Cell>{obj.id}</Table.Cell>
+                                <Table.Cell>{obj.pdf}</Table.Cell>
+                                <Table.Cell>{obj.text}</Table.Cell>
+                                <Table.Cell>{obj.url}</Table.Cell>
+                                <Table.Cell>{obj.impressions}</Table.Cell>
+                                <Table.Cell>{obj.clicks}</Table.Cell>
+                                <Table.Cell>amount: {obj.spend.amount == null ? 'N/A' : obj.spend.amount } / currency: {obj.spend.currency == null ? 'N/A' : obj.spend.currency }</Table.Cell>
+                                <Table.Cell>{obj.created == null ? 'N/A' : obj.created}</Table.Cell>
+                                <Table.Cell>{obj.ended == null ? 'N/A' : obj.ended}</Table.Cell>
+                                <Table.Cell>Disclosed</Table.Cell>
+                                <Table.Cell>{obj.image}</Table.Cell>
+                            </Table.Row>
+                        </Table.Body>
+                    )}
                 </Table>
             </div>
         )

@@ -12,7 +12,7 @@ class App extends React.Component{
   state = {
     data: JSONDATA,
     displayTable: true,
-    displayObject: {},
+    displayObjectArray: [],
     idSearchValue: '',
     id: '',
     pdf: '',
@@ -32,18 +32,22 @@ class App extends React.Component{
         return keys
   }
 
-  displayCallback = (dataObject) => {
-    this.setState((prevState) => ({
-        displayTable: !prevState,
-        displayObject: dataObject,
-      })
-    )
-  }
+  // displayCallback = (dataObject) => {
+  //   let displayObjectArrayCopy = [...this.state.displayObjectArray]
+
+  //   displayObjectArrayCopy = [...displayObjectArrayCopy, dataObject]
+  //   this.setState((prevState) => ({
+  //       displayTable: !prevState,
+  //       displayObjectArray: displayObjectArrayCopy,
+  //     })
+  //   )
+  // }
+
 
   backToDisplayTable = () => {
-
     this.setState({
       displayTable: true,
+      displayObjectArray: [],
     })
     
   }
@@ -67,7 +71,7 @@ class App extends React.Component{
 
     this.setState((prevState) => ({
         displayTable: !prevState,
-        displayObject: searchObject,
+        displayObjectArray: [...this.state.displayObjectArray, searchObject],
       })
     )
   }
@@ -141,10 +145,55 @@ class App extends React.Component{
     }
   }
 
+  multipleFileSubmit = (event) => {
+    event.preventDefault()
+    let copydisplayObjectArray = [...this.state.displayObjectArray]
+    let id = event.target.querySelector('#multipleFileFormInput').value
+    let data = [...this.state.data]
+
+    let submittedObj = data.find(dataObject => dataObject.id == id)
+
+    if (submittedObj != null){
+      if(!copydisplayObjectArray.includes(submittedObj)){
+        copydisplayObjectArray = [...copydisplayObjectArray,submittedObj]
+    
+        this.setState({
+          displayObjectArray: copydisplayObjectArray,
+        })
+      } else {
+        alert('File with that id has already been added!')
+      }
+    } else {
+      alert('File with that id does not exist.')
+    }
+  }
+
+  viewMultipleFiles = () => {
+    this.setState((prevState) =>({
+        displayTable: !prevState,
+      })
+    )
+  }
+
+  deleteFileFromView = (obj) => {
+    //find the obj delete the obj from displayobject array
+    console.log('deleting this obj: ',obj)
+    let copydisplayObjectArray = [...this.state.displayObjectArray]
+    let index = copydisplayObjectArray.indexOf(obj)
+
+    copydisplayObjectArray.splice(index,1)
+
+    this.setState({
+      displayObjectArray: copydisplayObjectArray
+    })
+
+  }
 
   render(){
     const properties = this.getKeys()
     const filteringType = this.state.filterForm
+    const filesArray = [...this.state.displayObjectArray]
+
     const formDisplay = filteringType == null ? null :
       <form id='filterForm' className='filter-form'>
         {filteringType.charAt(0).toUpperCase() + filteringType.slice(1)}:
@@ -152,15 +201,27 @@ class App extends React.Component{
         <button onClick={(event) => this.resetTableData(event)}>clear filtering</button>
       </form>
 
+    const multipleFilesArrayDisplay = filesArray == null ? null : <div className='button-group-spacing'>
+                                                                    {filesArray.map(file => <button className='button-spacing' onClick={() => this.deleteFileFromView(file)}>{file.id}</button>)}
+                                                                  </div>
+    console.log(filesArray)
     return (
       <div>
         {this.state.displayTable === true ? 
           <div className='center'>
             <form onSubmit={(event) => this.handleIdSearchIdSubmit(event)}  >
-              {/* Search: <input placeholder='search by id' name='idSearchValue' id='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/><button >submit</button> */}
-              Search by Id <Input action={{ icon: 'search' }} placeholder='id here' name='idSearchValue' id='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/>
+              <h3>Search by Id</h3> <Input action={{ icon: 'search' }} placeholder='id here' name='idSearchValue' id='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/>
             </form>
 
+            <div>
+              <form className='multiple-file-form' onSubmit={(event) => this.multipleFileSubmit(event)}>
+                <h3>To view multiple files together type in the Ids here</h3>
+                <input id='multipleFileFormInput' placeholder='submit one id at a time'/>
+                <button>Submit</button>
+              </form>
+              {multipleFilesArrayDisplay}
+              {filesArray.length == 0 ? null : <button onClick={this.viewMultipleFiles}>Click to view</button>}
+            </div>
 
             <h3>Filtering Options</h3>
             <Button.Group>
@@ -175,10 +236,11 @@ class App extends React.Component{
 
             {formDisplay}
 
-            <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} displayCallback={this.displayCallback} sortTableData={this.sortTableData}/>
+            {/* <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} displayCallback={this.displayCallback} sortTableData={this.sortTableData}/> */}
+            <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} sortTableData={this.sortTableData}/>
           </div>
             :
-          <DataDisplay displayObject={this.state.displayObject} backToDisplayTable={this.backToDisplayTable} properties={properties} />
+          <DataDisplay displayObjectArray={this.state.displayObjectArray} backToDisplayTable={this.backToDisplayTable} properties={properties} />
         }
       </div>
     );
