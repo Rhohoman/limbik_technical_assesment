@@ -9,7 +9,7 @@ class DataDisplay extends React.Component{
         const headerCell = properties.map( property => (property == 'impressions' || property == 'clicks') ? <Table.HeaderCell rowSpan='2' onClick={() => this.props.sortTableData(property) }>{property} (click to sort)</Table.HeaderCell> : <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
 
         return(
-            <div>
+            <div className='center'>
                 <button onClick={() => this.props.backToDisplayTable()}>Back</button>
 
                 <h3>Displaying...</h3>
