@@ -8,23 +8,6 @@ class DataDisplay extends React.Component{
         const properties = this.props.properties
         const headerCell = properties.map( property => (property == 'impressions' || property == 'clicks') ? <Table.HeaderCell rowSpan='2' onClick={() => this.props.sortTableData(property) }>{property} (click to sort)</Table.HeaderCell> : <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
 
-        // const display = displayObjectArray.map(obj =>
-        //         <Table.Body>
-        //             <Table.Row>
-        //                 <Table.Cell>{obj.id}</Table.Cell>
-        //                 <Table.Cell>{obj.pdf}</Table.Cell>
-        //                 <Table.Cell>{obj.text}</Table.Cell>
-        //                 <Table.Cell>{obj.url}</Table.Cell>
-        //                 <Table.Cell>{obj.impressions}</Table.Cell>
-        //                 <Table.Cell>{obj.clicks}</Table.Cell>
-        //                 <Table.Cell>amount: {obj.spend.amount == null ? 'N/A' : obj.spend.amount } / currency: {obj.spend.currency == null ? 'N/A' : obj.spend.currency }</Table.Cell>
-        //                 <Table.Cell>{obj.created == null ? 'N/A' : obj.created}</Table.Cell>
-        //                 <Table.Cell>{obj.ended == null ? 'N/A' : obj.ended}</Table.Cell>
-        //                 <Table.Cell>Disclosed</Table.Cell>
-        //                 <Table.Cell>{obj.image}</Table.Cell>
-        //             </Table.Row>
-        //         </Table.Body>
-        // )
         return(
             <div className='center'>
                 <button onClick={() => this.props.backToDisplayTable()}>Back</button>

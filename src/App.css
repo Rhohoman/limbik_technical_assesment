@@ -22,6 +22,10 @@
     margin-bottom: 30px;
 }
 
-/* .button-spacing {
-    margin-top: 30px;
-} */
+.button-group-spacing {
+    margin-bottom: 30px;
+}
+
+.button-spacing {
+    margin-right: 10px;
+}

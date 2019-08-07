@@ -174,6 +174,19 @@ class App extends React.Component{
     )
   }
 
+  deleteFileFromView = (obj) => {
+    //find the obj delete the obj from displayobject array
+    console.log('deleting this obj: ',obj)
+    let copydisplayObjectArray = [...this.state.displayObjectArray]
+    let index = copydisplayObjectArray.indexOf(obj)
+
+    copydisplayObjectArray.splice(index,1)
+
+    this.setState({
+      displayObjectArray: copydisplayObjectArray
+    })
+
+  }
 
   render(){
     const properties = this.getKeys()
@@ -187,16 +200,15 @@ class App extends React.Component{
         <button onClick={(event) => this.resetTableData(event)}>clear filtering</button>
       </form>
 
-    const multipleFilesArrayDisplay = filesArray == null ? null : <div>
-      {filesArray.map(file => <button onClick={() => console.log('delete')}>{file.id}</button>)}
-    </div>
-
+    const multipleFilesArrayDisplay = filesArray == null ? null : <div className='button-group-spacing'>
+                                                                    {filesArray.map(file => <button className='button-spacing' onClick={() => this.deleteFileFromView(file)}>{file.id}</button>)}
+                                                                  </div>
+    console.log(filesArray)
     return (
       <div>
         {this.state.displayTable === true ? 
           <div className='center'>
             <form onSubmit={(event) => this.handleIdSearchIdSubmit(event)}  >
-              {/* Search: <input placeholder='search by id' name='idSearchValue' id='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/><button >submit</button> */}
               <h3>Search by Id</h3> <Input action={{ icon: 'search' }} placeholder='id here' name='idSearchValue' id='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/>
             </form>
 
@@ -207,7 +219,7 @@ class App extends React.Component{
                 <button>Submit</button>
               </form>
               {multipleFilesArrayDisplay}
-              <button onClick={this.viewMultipleFiles}>Click to view</button>
+              {filesArray.length == 0 ? null : <button onClick={this.viewMultipleFiles}>Click to view</button>}
             </div>
 
             <h3>Filtering Options</h3>
