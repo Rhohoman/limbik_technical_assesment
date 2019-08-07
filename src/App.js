@@ -12,7 +12,7 @@ class App extends React.Component{
   state = {
     data: JSONDATA,
     displayTable: true,
-    displayObject: {},
+    displayObjectArray: [],
     idSearchValue: '',
     id: '',
     pdf: '',
@@ -22,7 +22,6 @@ class App extends React.Component{
     filterForm: null,
     filteredTableData: [],
     sorted: false,
-    multipleFilesArray: [],
   }
 
 
@@ -34,17 +33,20 @@ class App extends React.Component{
   }
 
   displayCallback = (dataObject) => {
+    let displayObjectCopy = [...this.state.displayObjectArray]
+    // displayObjectCopy.length = 0
+    displayObjectCopy = [...displayObjectCopy, dataObject]
     this.setState((prevState) => ({
         displayTable: !prevState,
-        displayObject: dataObject,
+        displayObjectArray: displayObjectCopy,
       })
     )
   }
 
   backToDisplayTable = () => {
-
     this.setState({
       displayTable: true,
+      displayObjectArray: [],
     })
     
   }
@@ -68,7 +70,7 @@ class App extends React.Component{
 
     this.setState((prevState) => ({
         displayTable: !prevState,
-        displayObject: searchObject,
+        displayObjectArray: [...this.state.displayObjectArray, searchObject],
       })
     )
   }
@@ -144,30 +146,39 @@ class App extends React.Component{
 
   multipleFileSubmit = (event) => {
     event.preventDefault()
-
-    let copyMultipleFilesArray = [...this.state.multipleFilesArray]
+    let copydisplayObjectArray = [...this.state.displayObjectArray]
     let id = event.target.querySelector('#multipleFileFormInput').value
     let data = [...this.state.data]
 
     let submittedObj = data.find(dataObject => dataObject.id == id)
 
-    if(!copyMultipleFilesArray.includes(submittedObj)){
-      copyMultipleFilesArray = [...copyMultipleFilesArray,submittedObj]
-  
-      this.setState({
-        multipleFilesArray: copyMultipleFilesArray,
-      },() => console.log(this.state.multipleFilesArray))
+    if (submittedObj != null){
+      if(!copydisplayObjectArray.includes(submittedObj)){
+        copydisplayObjectArray = [...copydisplayObjectArray,submittedObj]
+    
+        this.setState({
+          displayObjectArray: copydisplayObjectArray,
+        })
+      } else {
+        alert('File with that id has already been added!')
+      }
     } else {
-      alert('File already added!')
+      alert('File with that id does not exist.')
     }
+  }
 
+  viewMultipleFiles = () => {
+    this.setState((prevState) =>({
+        displayTable: !prevState,
+      })
+    )
   }
 
 
   render(){
     const properties = this.getKeys()
     const filteringType = this.state.filterForm
-    const filesArray = [...this.state.multipleFilesArray]
+    const filesArray = [...this.state.displayObjectArray]
 
     const formDisplay = filteringType == null ? null :
       <form id='filterForm' className='filter-form'>
@@ -196,7 +207,7 @@ class App extends React.Component{
                 <button>Submit</button>
               </form>
               {multipleFilesArrayDisplay}
-              <button >Click to view</button>
+              <button onClick={this.viewMultipleFiles}>Click to view</button>
             </div>
 
             <h3>Filtering Options</h3>
@@ -215,7 +226,7 @@ class App extends React.Component{
             <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} displayCallback={this.displayCallback} sortTableData={this.sortTableData}/>
           </div>
             :
-          <DataDisplay displayObject={this.state.displayObject} backToDisplayTable={this.backToDisplayTable} properties={properties} />
+          <DataDisplay displayObjectArray={this.state.displayObjectArray} backToDisplayTable={this.backToDisplayTable} properties={properties} />
         }
       </div>
     );
