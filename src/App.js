@@ -32,6 +32,7 @@ class App extends React.Component{
         return keys
   }
 
+  // stretch
   // displayCallback = (dataObject) => {
   //   let displayObjectArrayCopy = [...this.state.displayObjectArray]
 
@@ -240,7 +241,7 @@ class App extends React.Component{
             <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} sortTableData={this.sortTableData}/>
           </div>
             :
-          <DataDisplay displayObjectArray={this.state.displayObjectArray} backToDisplayTable={this.backToDisplayTable} properties={properties} />
+          <DataDisplay displayObjectArray={this.state.displayObjectArray} backToDisplayTable={this.backToDisplayTable} properties={properties}/>
         }
       </div>
     );

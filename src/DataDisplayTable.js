@@ -11,7 +11,7 @@ class DataDisplayTable extends React.Component {
 
         const tableRow = data.map(dataObject =>
             // <Table.Row onClick={() => this.props.displayCallback(dataObject)}>
-            <Table.Row >
+            <Table.Row > 
                 <Table.Cell>{dataObject.id}</Table.Cell>
                 <Table.Cell>{dataObject.pdf}</Table.Cell>
                 <Table.Cell>{dataObject.text}</Table.Cell>
