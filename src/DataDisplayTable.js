@@ -10,7 +10,8 @@ class DataDisplayTable extends React.Component {
         const headerCell = properties.map( property => (property == 'impressions' || property == 'clicks') ? <Table.HeaderCell onClick={() => this.props.sortTableData(property) }>{property} (click to sort)</Table.HeaderCell> : <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
 
         const tableRow = data.map(dataObject =>
-            <Table.Row onClick={() => this.props.displayCallback(dataObject)}>
+            // <Table.Row onClick={() => this.props.displayCallback(dataObject)}>
+            <Table.Row >
                 <Table.Cell>{dataObject.id}</Table.Cell>
                 <Table.Cell>{dataObject.pdf}</Table.Cell>
                 <Table.Cell>{dataObject.text}</Table.Cell>

@@ -32,16 +32,17 @@ class App extends React.Component{
         return keys
   }
 
-  displayCallback = (dataObject) => {
-    let displayObjectCopy = [...this.state.displayObjectArray]
-    // displayObjectCopy.length = 0
-    displayObjectCopy = [...displayObjectCopy, dataObject]
-    this.setState((prevState) => ({
-        displayTable: !prevState,
-        displayObjectArray: displayObjectCopy,
-      })
-    )
-  }
+  // displayCallback = (dataObject) => {
+  //   let displayObjectArrayCopy = [...this.state.displayObjectArray]
+
+  //   displayObjectArrayCopy = [...displayObjectArrayCopy, dataObject]
+  //   this.setState((prevState) => ({
+  //       displayTable: !prevState,
+  //       displayObjectArray: displayObjectArrayCopy,
+  //     })
+  //   )
+  // }
+
 
   backToDisplayTable = () => {
     this.setState({
@@ -235,7 +236,8 @@ class App extends React.Component{
 
             {formDisplay}
 
-            <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} displayCallback={this.displayCallback} sortTableData={this.sortTableData}/>
+            {/* <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} displayCallback={this.displayCallback} sortTableData={this.sortTableData}/> */}
+            <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} sortTableData={this.sortTableData}/>
           </div>
             :
           <DataDisplay displayObjectArray={this.state.displayObjectArray} backToDisplayTable={this.backToDisplayTable} properties={properties} />
