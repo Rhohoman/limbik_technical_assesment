@@ -22,6 +22,7 @@ class App extends React.Component{
     filterForm: null,
     filteredTableData: [],
     sorted: false,
+    multipleFilesArray: [],
   }
 
 
@@ -141,10 +142,33 @@ class App extends React.Component{
     }
   }
 
+  multipleFileSubmit = (event) => {
+    event.preventDefault()
+
+    let copyMultipleFilesArray = [...this.state.multipleFilesArray]
+    let id = event.target.querySelector('#multipleFileFormInput').value
+    let data = [...this.state.data]
+
+    let submittedObj = data.find(dataObject => dataObject.id == id)
+
+    if(!copyMultipleFilesArray.includes(submittedObj)){
+      copyMultipleFilesArray = [...copyMultipleFilesArray,submittedObj]
+  
+      this.setState({
+        multipleFilesArray: copyMultipleFilesArray,
+      },() => console.log(this.state.multipleFilesArray))
+    } else {
+      alert('File already added!')
+    }
+
+  }
+
 
   render(){
     const properties = this.getKeys()
     const filteringType = this.state.filterForm
+    const filesArray = [...this.state.multipleFilesArray]
+
     const formDisplay = filteringType == null ? null :
       <form id='filterForm' className='filter-form'>
         {filteringType.charAt(0).toUpperCase() + filteringType.slice(1)}:
@@ -152,15 +176,28 @@ class App extends React.Component{
         <button onClick={(event) => this.resetTableData(event)}>clear filtering</button>
       </form>
 
+    const multipleFilesArrayDisplay = filesArray == null ? null : <div>
+      {filesArray.map(file => <button onClick={() => console.log('delete')}>{file.id}</button>)}
+    </div>
+
     return (
       <div>
         {this.state.displayTable === true ? 
           <div className='center'>
             <form onSubmit={(event) => this.handleIdSearchIdSubmit(event)}  >
               {/* Search: <input placeholder='search by id' name='idSearchValue' id='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/><button >submit</button> */}
-              Search by Id <Input action={{ icon: 'search' }} placeholder='id here' name='idSearchValue' id='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/>
+              <h3>Search by Id</h3> <Input action={{ icon: 'search' }} placeholder='id here' name='idSearchValue' id='idSearchValue' onChange={(event) => this.handleIdSearchChange(event)}/>
             </form>
 
+            <div>
+              <form className='multiple-file-form' onSubmit={(event) => this.multipleFileSubmit(event)}>
+                <h3>To view multiple files together type in the Ids here</h3>
+                <input id='multipleFileFormInput' placeholder='submit one id at a time'/>
+                <button>Submit</button>
+              </form>
+              {multipleFilesArrayDisplay}
+              <button >Click to view</button>
+            </div>
 
             <h3>Filtering Options</h3>
             <Button.Group>
