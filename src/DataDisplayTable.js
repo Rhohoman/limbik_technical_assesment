@@ -7,7 +7,7 @@ class DataDisplayTable extends React.Component {
         const data = this.props.data
         const properties = this.props.properties
 
-        const headerCell = properties.map( property => (property == 'impressions' || property == 'clicks') ? <Table.HeaderCell rowSpan='2' onClick={() => this.props.sortTableData(property) }>{property} (click to sort)</Table.HeaderCell> : <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
+        const headerCell = properties.map( property => (property == 'impressions' || property == 'clicks') ? <Table.HeaderCell onClick={() => this.props.sortTableData(property) }>{property} (click to sort)</Table.HeaderCell> : <Table.HeaderCell rowSpan='2'>{property}</Table.HeaderCell>)
 
         const tableRow = data.map(dataObject =>
             <Table.Row onClick={() => this.props.displayCallback(dataObject)}>
@@ -21,11 +21,11 @@ class DataDisplayTable extends React.Component {
                 <Table.Cell>{dataObject.created == null ? 'N/A' : dataObject.created}</Table.Cell>
                 <Table.Cell>{dataObject.ended == null ? 'N/A' : dataObject.ended}</Table.Cell>
                 <Table.Cell>Disclosed</Table.Cell>
-                <Table.Cell>{dataObject.image}</Table.Cell>
+                <Table.Cell>{dataObject.image  == null ? 'N/A' : dataObject.image}</Table.Cell>
             </Table.Row>
         )
         return(
-            <div>
+            <div className='display-table'>
                 <h1>Display Table</h1>
 
                 <Table celled structured striped compact>
