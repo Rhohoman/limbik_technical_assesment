@@ -22,6 +22,7 @@ class App extends React.Component{
     filterForm: null,
     filteredTableData: [],
     sorted: false,
+    sortedClicks: false,
   }
 
 
@@ -32,6 +33,7 @@ class App extends React.Component{
         return keys
   }
 
+  // stretch
   // displayCallback = (dataObject) => {
   //   let displayObjectArrayCopy = [...this.state.displayObjectArray]
 
@@ -123,6 +125,7 @@ class App extends React.Component{
   }
 
   sortTableData = (sortType) => {
+    console.log('sortType is ',sortType)
 
     let data = [...this.state.data]
     let sortedData = []
@@ -136,8 +139,8 @@ class App extends React.Component{
         filteredTableData: sortedData,
       })
     } else if (sortType == 'clicks'){
-      sortedData = this.state.sorted ? data.sort(function(a,b) {return a.impressions - b.impressions}) : data.sort(function(a,b) {return b.impressions - a.impressions})
-
+      sortedData = this.state.sorted ? data.sort(function(a,b) {return a.clicks - b.clicks}) : data.sort(function(a,b) {return b.clicks - a.clicks})
+      
       this.setState({
         sorted: !this.state.sorted,
         filteredTableData: sortedData,
@@ -204,7 +207,7 @@ class App extends React.Component{
     const multipleFilesArrayDisplay = filesArray == null ? null : <div className='button-group-spacing'>
                                                                     {filesArray.map(file => <button className='button-spacing' onClick={() => this.deleteFileFromView(file)}>{file.id}</button>)}
                                                                   </div>
-    console.log(filesArray)
+    // console.log(filesArray)
     return (
       <div>
         {this.state.displayTable === true ? 
@@ -240,7 +243,7 @@ class App extends React.Component{
             <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} sortTableData={this.sortTableData}/>
           </div>
             :
-          <DataDisplay displayObjectArray={this.state.displayObjectArray} backToDisplayTable={this.backToDisplayTable} properties={properties} />
+          <DataDisplay displayObjectArray={this.state.displayObjectArray} backToDisplayTable={this.backToDisplayTable} properties={properties}/>
         }
       </div>
     );
