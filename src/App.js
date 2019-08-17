@@ -27,23 +27,27 @@ class App extends React.Component{
 
 
   getKeys = () => {
-        let dataArray = [...this.state.data]
+        // let dataArray = [...this.state.data]
+        let dataArray = JSONDATA
+
         let keys = dataArray.map(object => Object.keys(object))[0]
 
         return keys
   }
 
   // stretch
-  // displayCallback = (dataObject) => {
-  //   let displayObjectArrayCopy = [...this.state.displayObjectArray]
+  displayCallback = (dataObject) => {
 
-  //   displayObjectArrayCopy = [...displayObjectArrayCopy, dataObject]
-  //   this.setState((prevState) => ({
-  //       displayTable: !prevState,
-  //       displayObjectArray: displayObjectArrayCopy,
-  //     })
-  //   )
-  // }
+    let displayObjectArrayCopy = [...this.state.displayObjectArray]
+
+    displayObjectArrayCopy = [dataObject]
+
+    this.setState((prevState) => ({
+        displayTable: !prevState,
+        displayObjectArray: displayObjectArrayCopy,
+      })
+    )
+  }
 
 
   backToDisplayTable = () => {
@@ -81,6 +85,7 @@ class App extends React.Component{
   handleFilterChange = (event) => {
     let filterKey = event.target.name
     let filterTerm = event.target.value
+
     this.setState({
       [event.target.name]: filterTerm
     },() => this.handleDataTableFilter(filterKey,filterTerm))
@@ -92,6 +97,7 @@ class App extends React.Component{
 
     if( (filterKey == 'id') || (filterKey == 'impressions') || (filterKey == 'clicks')){
       filteredData = data.filter(obj => obj[filterKey].toString().includes(filterTerm))
+      // filtering numbers arent there
       if(filteredData.length == 0){
         alert('no data matches this filter term')
       }
@@ -113,6 +119,7 @@ class App extends React.Component{
     this.setState({
       filterForm: event.target.innerText
     })
+    //what am i filtering by
   }
 
   resetTableData = (event) => {
@@ -130,22 +137,12 @@ class App extends React.Component{
     let data = [...this.state.data]
     let sortedData = []
 
-    if (sortType == 'impressions'){
+    sortedData = this.state.sorted ? data.sort(function(a,b) {return a[sortType] - b[sortType]}) : data.sort(function(a,b) {return b[sortType]- a[sortType]})
 
-      sortedData = this.state.sorted ? data.sort(function(a,b) {return a.impressions - b.impressions}) : data.sort(function(a,b) {return b.impressions - a.impressions})
-
-      this.setState({
-        sorted: !this.state.sorted,
-        filteredTableData: sortedData,
-      })
-    } else if (sortType == 'clicks'){
-      sortedData = this.state.sorted ? data.sort(function(a,b) {return a.clicks - b.clicks}) : data.sort(function(a,b) {return b.clicks - a.clicks})
-      
-      this.setState({
-        sorted: !this.state.sorted,
-        filteredTableData: sortedData,
-      })
-    }
+    this.setState({
+      sorted: !this.state.sorted,
+      filteredTableData: sortedData,
+    })
   }
 
   multipleFileSubmit = (event) => {
@@ -157,6 +154,7 @@ class App extends React.Component{
     let submittedObj = data.find(dataObject => dataObject.id == id)
 
     if (submittedObj != null){
+
       if(!copydisplayObjectArray.includes(submittedObj)){
         copydisplayObjectArray = [...copydisplayObjectArray,submittedObj]
     
@@ -166,6 +164,7 @@ class App extends React.Component{
       } else {
         alert('File with that id has already been added!')
       }
+
     } else {
       alert('File with that id does not exist.')
     }
@@ -239,8 +238,8 @@ class App extends React.Component{
 
             {formDisplay}
 
-            {/* <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} displayCallback={this.displayCallback} sortTableData={this.sortTableData}/> */}
-            <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} sortTableData={this.sortTableData}/>
+            <DataDisplayTable data={this.state.filteredTableData.length == 0 ? this.state.data : this.state.filteredTableData} properties={properties} displayCallback={this.displayCallback} sortTableData={this.sortTableData}/>
+            {/* <DataDisplayTable data={this.state.filteredTableData.length == 0 ? JSONDATA : this.state.filteredTableData} properties={properties} sortTableData={this.sortTableData}/> */}
           </div>
             :
           <DataDisplay displayObjectArray={this.state.displayObjectArray} backToDisplayTable={this.backToDisplayTable} properties={properties}/>
